@@ -1,4 +1,3 @@
-<?php
 if ( ! defined( 'GPBRC_FORM_ID' ) ) {
 	define( 'GPBRC_FORM_ID', 92 );
 }
