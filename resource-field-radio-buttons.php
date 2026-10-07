@@ -1,3 +1,4 @@
+<?php
 if ( ! defined( 'GPBRC_FORM_ID' ) ) {
 	define( 'GPBRC_FORM_ID', 92 );
 }
@@ -156,3 +157,4 @@ function gpbrc_select_to_radio( $html, $form_id, $field_id ) {
 
 	return $radio;
 }
+?>
