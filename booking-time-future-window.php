@@ -14,18 +14,6 @@
 
 add_filter( 'gpb_availability_end', 'gpbt_limit_future_window', 10, 3 );
 
-/**
- * Apply the configured future window for the service being checked.
- *
- * Precedence when a Booking Time field rule and a service rule both match:
- * the field rule wins (it's scoped to that specific booking UI); service rules
- * are the general fallback.
- *
- * @param \Carbon\CarbonImmutable|null $end          Current end (null = no restriction).
- * @param \GP_Bookings\Service|null    $service      Service being checked.
- * @param int[]                        $resource_ids Resource IDs being checked.
- * @return \Carbon\CarbonImmutable|null
- */
 function gpbt_limit_future_window( $end, $service, $resource_ids ) {
 	if ( ! class_exists( '\GP_Bookings\Service' ) || ! $service instanceof \GP_Bookings\Service ) {
 		return $end;
