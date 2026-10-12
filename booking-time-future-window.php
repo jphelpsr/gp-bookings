@@ -78,9 +78,6 @@ function gpbt_future_window_config() {
 
 /**
  * Resolve a window spec to an inclusive end-of-day CarbonImmutable in the site timezone.
- *
- * @param string|null|\Carbon\CarbonImmutable $spec Window spec.
- * @return \Carbon\CarbonImmutable|null
  */
 function gpbt_resolve_window( $spec ) {
 	if ( null === $spec || '' === $spec ) {
@@ -95,16 +92,13 @@ function gpbt_resolve_window( $spec ) {
 		}
 
 		if ( is_string( $spec ) && preg_match( '/^P\d/i', $spec ) ) {
-			// DateInterval spec: 'P90D', 'P6M', 'P1Y6M'.
 			return $today->add( new \DateInterval( $spec ) )->endOfDay();
 		}
 
 		if ( is_string( $spec ) && preg_match( '/^\d{4}-\d{2}-\d{2}/', $spec ) ) {
-			// Absolute date: window ends end-of-day, inclusive.
 			return \GP_Bookings\Utils\DateTimeUtils::parse( $spec )->endOfDay();
 		}
 
-		// Natural language: '90 days', '6 months', '2 years', '1 year 6 months'.
 		return $today->add( \Carbon\CarbonInterval::fromString( $spec ) )->endOfDay();
 	} catch ( \Throwable $e ) {
 		trigger_error( 'GP Bookings future window: invalid spec ' . wp_json_encode( $spec ) . ' — ' . $e->getMessage(), E_USER_WARNING );
@@ -119,8 +113,6 @@ function gpbt_resolve_window( $spec ) {
  * (e.g. '12.3'). Values are arrays keyed by service ID.
  *
  * Cached for an hour; invalidated when forms or services are saved.
- *
- * @return array<string, array<int, true>>
  */
 function gpbt_booking_time_field_services() {
 	$cached = get_transient( 'gpbt_booking_time_field_services' );
@@ -136,7 +128,6 @@ function gpbt_booking_time_field_services() {
 			continue;
 		}
 
-		// Service fields grouped by the booking field they are linked to.
 		$service_fields = [];
 		foreach ( $form['fields'] as $field ) {
 			if ( $field->type === 'gpb_service' && ! empty( $field->gpbBookingField ) ) {
@@ -154,7 +145,6 @@ function gpbt_booking_time_field_services() {
 				$service_ids = array_merge( $service_ids, gpbt_service_field_service_ids( $service_field ) );
 			}
 
-			// Legacy direct link (no booking field).
 			if ( ! $service_ids && ! empty( $field->gpbServiceField ) ) {
 				foreach ( $form['fields'] as $candidate ) {
 					if ( (int) $field->gpbServiceField === (int) $candidate->id ) {
@@ -180,7 +170,6 @@ function gpbt_booking_time_field_services() {
  * Service IDs a Service field can offer.
  *
  * @param \GF_Field $service_field The gpb_service field.
- * @return int[]
  */
 function gpbt_service_field_service_ids( $service_field ) {
 	if ( ( $service_field->gpbSelectionMode ?? 'preselected' ) === 'manual' ) {
@@ -188,7 +177,6 @@ function gpbt_service_field_service_ids( $service_field ) {
 			return array_map( 'intval', $service_field->gpbServices );
 		}
 
-		// No services configured — the field offers every published service.
 		return array_map(
 			'intval',
 			get_posts( [
@@ -203,7 +191,6 @@ function gpbt_service_field_service_ids( $service_field ) {
 	return [ (int) $service_field->gpbService ];
 }
 
-// Invalidate the field → services map when forms or services change.
 add_action( 'gform_after_save_form', 'gpbt_flush_field_service_map' );
 add_action( 'save_post_gpb_service', 'gpbt_flush_field_service_map' );
 add_action( 'trashed_post', 'gpbt_flush_field_service_map' );
@@ -211,8 +198,6 @@ add_action( 'untrashed_post', 'gpbt_flush_field_service_map' );
 
 /**
  * Delete the cached field → services map.
- *
- * @return void
  */
 function gpbt_flush_field_service_map() {
 	delete_transient( 'gpbt_booking_time_field_services' );
