@@ -17,4 +17,3 @@ add_filter( 'gpb_default_status', function( $status, $bookable, $entry ) {
 
 	return $service_statuses[ $bookable->get_id() ] ?? $status;
 }, 10, 3 );
-?>
