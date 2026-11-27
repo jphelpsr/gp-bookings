@@ -202,4 +202,3 @@ add_action( 'untrashed_post', 'gpbt_flush_field_service_map' );
 function gpbt_flush_field_service_map() {
 	delete_transient( 'gpbt_booking_time_field_services' );
 }
-?>
