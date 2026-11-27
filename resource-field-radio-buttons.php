@@ -157,4 +157,3 @@ function gpbrc_select_to_radio( $html, $form_id, $field_id ) {
 
 	return $radio;
 }
-?>
