@@ -66,4 +66,3 @@ add_filter( 'gpb_validate_booking_duration', function( $result, $start, $end, $s
 
 	return $result;
 }, 10, 4 );
-?>
