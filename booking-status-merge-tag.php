@@ -1,8 +1,20 @@
 <?php
 /**
- * 
- * Use {gpb_booking_status} in confirmations, notifications, and Calendar Sync.
- * Like the original snippet, entries with multiple services use the first one.
+ * Gravity Perks // Bookings // Booking Status Merge Tag
+ * https://gravitywiz.com/documentation/gravity-forms-bookings/
+ *
+ * Add a {gpb_booking_status} merge tag for confirmations, notifications, and Google Calendar
+ * event descriptions. Use the new status during approval so resource calendar descriptions
+ * do not retain the previous status. Entries with multiple services use the first service.
+ *
+ * Instructions:
+ *
+ * 1. Install this snippet by following the instructions here:
+ *    https://gravitywiz.com/documentation/how-do-i-install-a-snippet/
+ *
+ * 2. Disable the original booking status merge tag snippet. Do not run both versions.
+ *
+ * 3. Add {gpb_booking_status} to your confirmation, notification, or Calendar Sync template.
  */
 class GW_GPB_Booking_Status_Merge_Tag {
 	private static $transitions = [];
